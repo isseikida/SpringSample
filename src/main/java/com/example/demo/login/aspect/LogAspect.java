@@ -19,7 +19,7 @@
 //	}
 //
 //	//ポイント2 : AOP実装
-//	@After("execution(* *..*.*Controller*(..))")
+//	@After("execution(* *..*.*Controller.*(..))")
 //	public void endLog(JoinPoint jp) {
 //		System.out.println("メソッド終了 : " + jp.getSignature());
 //	}
