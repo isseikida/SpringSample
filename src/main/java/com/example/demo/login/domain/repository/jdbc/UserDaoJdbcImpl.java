@@ -75,7 +75,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		//取得したデータを結果返却用の変数にセットしていく
 		user.setUserId((String)map.get("user_id"));      //ユーザーID
 		user.setPassword((String)map.get("password"));   //パスワード
-		user.setBirthday((Date)map.get("birthday"));     //ユーザー名
+		user.setUserName((String)map.get("user_name"));  //ユーザー名
+		user.setBirthday((Date)map.get("birthday"));     //誕生日
 		user.setAge((Integer)map.get("age"));            //年齢
 		user.setMarriage((Boolean)map.get("marriage"));  //結婚ステータス
 		user.setRole((String)map.get("role"));           //ロール
@@ -121,13 +122,13 @@ public class UserDaoJdbcImpl implements UserDao {
 
 		//1件更新
 		int rowNumber = jdbc.update("UPDATE M_USER"
-				+"SET"
-				+ "password=?,"
-				+ "user_name=?,"
-				+ "birthday=?,"
-				+ "age=?,"
-				+ "marriage=?,"
-				+"WHERE user_id=?"
+				+" SET"
+				+ " password=?,"
+				+ " user_name=?,"
+				+ " birthday=?,"
+				+ " age=?,"
+				+ " marriage=?"
+				+" WHERE user_id=?"
 				,user.getPassword()
 				,user.getUserName()
 				,user.getBirthday()
