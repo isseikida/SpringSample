@@ -124,6 +124,11 @@ public class UserDaoJdbcImpl implements UserDao {
 				+ " WHERE user_id=?", user.getPassword(), user.getUserName(), user.getBirthday(), user.getAge(),
 				user.isMarriage(), user.getUserId());
 
+		//トランザクション確認のため、わざと例外をthrowする
+		if(rowNumber > 0) {
+			throw new DataAccessException("トランザクションテスト") {};
+		}
+
 		return rowNumber;
 
 	}
