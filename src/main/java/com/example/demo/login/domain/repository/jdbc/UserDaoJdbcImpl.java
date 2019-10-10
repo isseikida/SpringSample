@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 import com.example.demo.login.domain.model.User;
 import com.example.demo.login.domain.repository.UserDao;
 
-@Repository
+@Repository("UserDaoJdbcImpl")
 public class UserDaoJdbcImpl implements UserDao {
 
 	@Autowired
@@ -21,24 +21,24 @@ public class UserDaoJdbcImpl implements UserDao {
 
 	//Userテーブルの件数を取得
 	@Override
-	public int count() throws DataAccessException{
+	public int count() throws DataAccessException {
 
 		//ポイント1 : Objectの取得
 		//全件取得してカウント
-		int count=jdbc.queryForObject("SELECT COUNT(*) FROM m_user",Integer.class);;
-    return count;
+		int count = jdbc.queryForObject("SELECT COUNT(*) FROM m_user", Integer.class);
+		;
+		return count;
 	}
 
-//	//Userテーブルにデータを1件insert
-//	@Override
-//	public int insertOne(User user) throws DataAccessException{
-//		return 0;
-//	}
-
+	//	//Userテーブルにデータを1件insert
+	//	@Override
+	//	public int insertOne(User user) throws DataAccessException{
+	//		return 0;
+	//	}
 
 	//Userテーブルのデータを一件取得
 	@Override
-	public int insertOne(User user)throws DataAccessException{
+	public int insertOne(User user) throws DataAccessException {
 
 		//ポイント : insert
 		//1件登録
@@ -49,49 +49,59 @@ public class UserDaoJdbcImpl implements UserDao {
 				+ "age,"
 				+ "marriage,"
 				+ "role)"
-				+ " VALUES(?,?,?,?,?,?,?)"
-				,user.getUserId()
-				,user.getPassword()
-				,user.getUserName()
-				,user.getBirthday()
-				,user.getAge()
-				,user.isMarriage()
-				,user.getRole());
+				+ " VALUES(?,?,?,?,?,?,?)", user.getUserId(), user.getPassword(), user.getUserName(),
+				user.getBirthday(), user.getAge(), user.isMarriage(), user.getRole());
 		return rowNumber;
 
 	}
 
 	//Userテーブルのデータを1件取得
 	@Override
-	public User selectOne(String userId) throws DataAccessException{
-		return null;
+	public User selectOne(String userId) throws DataAccessException {
+		//ポイント : 一件取得
+		Map<String, Object> map = jdbc.queryForMap("SELECT * FROM m_user"
+				+ " WHERE user_id=?", userId);
+
+		//結果返却用の変数
+		User user = new User();
+
+		//取得したデータを結果返却用の変数にセットしていく
+		user.setUserId((String) map.get("user_id")); //ユーザーID
+		user.setPassword((String) map.get("password")); //パスワード
+		user.setUserName((String) map.get("user_name")); //ユーザー名
+		user.setBirthday((Date) map.get("birthday")); //誕生日
+		user.setAge((Integer) map.get("age")); //年齢
+		user.setMarriage((Boolean) map.get("marriage")); //結婚ステータス
+		user.setRole((String) map.get("role")); //ロール
+
+		return user;
 	}
 
 	//Userテーブルの全データを取得
 	@Override
-	public List<User>selectMany() throws DataAccessException{
+	public List<User> selectMany() throws DataAccessException {
 
 		//ポイント2 : 複数件のselect
 		//M_Userテーブルのデータを全件取得
-		List<Map<String,Object>>getList=jdbc.queryForList("SELECT * FROM m_user");
+		List<Map<String, Object>> getList = jdbc.queryForList("SELECT * FROM m_user");
 
 		//結果返却用の変数
-		List<User>userList=new ArrayList<>();
+		List<User> userList = new ArrayList<>();
 
 		//取得したデータを結果返却用のListに格納していく
-		for(Map<String,Object>map: getList) {
+		for (Map<String, Object> map : getList) {
 
 			//Userインスタンスの生成
 			User user = new User();
 
 			//Userインスタンスに取得したデータをセットする
-			user.setUserId((String)map.get("user_id"));     //ユーザーID
-			user.setPassword((String)map.get("password"));  //パスワード
-			user.setUserName((String)map.get("user_name")); //ユーザー名
-			user.setBirthday((Date)map.get("birthday"));    //誕生日
-			user.setAge((Integer)map.get("age"));           //年齢
-			user.setMarriage((Boolean)map.get("marriage")); //結婚ステータス
-			user.setRole((String)map.get("role"));          //ロール
+			user.setUserId((String) map.get("user_id")); //ユーザーID
+			user.setPassword((String) map.get("password")); //パスワード
+			user.setUserName((String) map.get("user_name")); //ユーザー名
+			user.setBirthday((Date) map.get("birthday")); //誕生日
+			user.setAge((Integer) map.get("age")); //年齢
+			user.setMarriage((Boolean) map.get("marriage")); //結婚ステータス
+			user.setRole((String) map.get("role")); //ロール
 
 			//結果返却用のListに追加
 			userList.add(user);
@@ -101,20 +111,48 @@ public class UserDaoJdbcImpl implements UserDao {
 
 	//Userテーブルを1件更新
 	@Override
-	public int updateOne(User user) throws DataAccessException{
-		return 0;
+	public int updateOne(User user) throws DataAccessException {
+
+		//1件更新
+		int rowNumber = jdbc.update("UPDATE M_USER"
+				+ " SET"
+				+ " password=?,"
+				+ " user_name=?,"
+				+ " birthday=?,"
+				+ " age=?,"
+				+ " marriage=?"
+				+ " WHERE user_id=?", user.getPassword(), user.getUserName(), user.getBirthday(), user.getAge(),
+				user.isMarriage(), user.getUserId());
+
+		//トランザクション確認のため、わざと例外をthrowする
+		//トランザクション実装確認用(確認が済んだためコメントアウト処理)
+//		if(rowNumber > 0) {
+//			throw new DataAccessException("トランザクションテスト") {};
+//		}
+
+		return rowNumber;
+
 	}
 
-	//Userrテーブルを1件削除
+	//Userテーブルを1件削除
 	@Override
-	public int deleteOne(String userId) throws DataAccessException{
-		return 0;
+	public int deleteOne(String userId) throws DataAccessException {
+		//1件削除
+		int rowNumber = jdbc.update("DELETE FROM m_user WHERE user_id=?", userId);
+		return rowNumber;
 	}
 
-
-	//Userテーブルの全データをCSVに出力する
+	//SQL取得結果をサーバーにCSVで保存
 	@Override
-	public void userCsvOut() throws DataAccessException{
+	public void userCsvOut() throws DataAccessException {
 
+		//M_USERテーブルのデータを全件取得するSQL
+		String sql = "SELECT * FROM m_user";
+
+		//ResultSetExtractorの生成
+		UserRowCallbackHandler handler = new UserRowCallbackHandler();
+
+		//SQL実行&CSV出力
+		jdbc.query(sql, handler);
 	}
 }
