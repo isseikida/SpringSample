@@ -125,6 +125,7 @@ public class UserDaoJdbcImpl implements UserDao {
 				user.isMarriage(), user.getUserId());
 
 		//トランザクション確認のため、わざと例外をthrowする
+		//トランザクション実装確認用(確認が済んだためコメントアウト処理)
 //		if(rowNumber > 0) {
 //			throw new DataAccessException("トランザクションテスト") {};
 //		}

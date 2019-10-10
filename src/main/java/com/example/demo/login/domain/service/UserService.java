@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.login.domain.model.User;
 import com.example.demo.login.domain.repository.UserDao;
 
+//ポイント : @Transactional
 @Transactional
 @Service
 public class UserService {

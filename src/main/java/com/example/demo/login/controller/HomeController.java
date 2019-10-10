@@ -119,9 +119,8 @@ public class HomeController {
 		user.setAge(form.getAge());
 		user.setMarriage(form.isMarriage());
 
+		
 	try {
-
-
 
 		//更新実行
 		boolean result=userService.updateOne(user);
