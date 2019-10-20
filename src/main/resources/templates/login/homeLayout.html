@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
 <head>
 <meta charset="UTF-8"></meta>
 
@@ -36,11 +37,12 @@
 		<div class="row">
 			<div class="col-sm-2 sidebar">
 				<ul class="nav nav-pills nav-stacked">
-					<li role="presentation"><a th:href="@{'/userList'}">ユーザ管理</a>
+					<li role="presentation"><a th:href="@{'/userList'}">ユーザ管理</a></li>
 					<!-- 画面表示の認可 -->
-					<li role="presentatin" sec:authorize="hasRole('ADMIN')">
+					<li role="presentation" sec:authorize="hasRole('ADMIN')">
+
 					<a th:href="@{'/admin'}">アドミン用画面</a>
-					</li>
+                    </li>
 				</ul>
 			</div>
 		</div>

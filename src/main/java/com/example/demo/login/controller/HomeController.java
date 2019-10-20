@@ -45,6 +45,20 @@ public class HomeController {
 	}
 
 
+	//Home画面のGET用メソッド
+		@GetMapping("/home")
+		public String getHome(Model model) {
+
+			//コンテンツ部分にユーザー一覧を表示するための文字列を登録
+			model.addAttribute("contents", "login/home::home_contents");
+
+			return "login/homeLayout";
+
+		}
+
+
+
+
 
 	//ユーザー一覧画面のGET用メソッド
 	@GetMapping("/userList")
@@ -197,7 +211,7 @@ public class HomeController {
 
 		//レイアウト用テンプレート
 	    return "login/homeLayout";
-	    
+
 	}
 
 

@@ -23,6 +23,9 @@ public class UserDaoJdbcImpl implements UserDao {
 	@Autowired
 	PasswordEncoder passwordEncoder;
 
+
+
+
 	//Userテーブルの件数を取得
 	@Override
 	public int count() throws DataAccessException {
@@ -34,17 +37,23 @@ public class UserDaoJdbcImpl implements UserDao {
 		return count;
 	}
 
+
+
+
 	//	//Userテーブルにデータを1件insert
 	//	@Override
 	//	public int insertOne(User user) throws DataAccessException{
 	//		return 0;
 	//	}
 
+
+
 	//Userテーブルのデータを一件取得
 	@Override
 	public int insertOne(User user) throws DataAccessException {
 
-
+		//パスワード暗号化
+				String password = passwordEncoder.encode(user.getPassword());
 
 		//ポイント : insert
 		//1件登録
@@ -55,11 +64,21 @@ public class UserDaoJdbcImpl implements UserDao {
 				+ "age,"
 				+ "marriage,"
 				+ "role)"
-				+ " VALUES(?,?,?,?,?,?,?)", user.getUserId(), user.getPassword(), user.getUserName(),
-				user.getBirthday(), user.getAge(), user.isMarriage(), user.getRole());
+				+ " VALUES(?,?,?,?,?,?,?)",
+				password,
+				user.getUserId(),
+				user.getPassword(),
+				user.getUserName(),
+				user.getBirthday(),
+				user.getAge(),
+				user.isMarriage(),
+				user.getRole());
+
 		return rowNumber;
 
 	}
+
+
 
 	//Userテーブルのデータを1件取得
 	@Override
@@ -82,6 +101,8 @@ public class UserDaoJdbcImpl implements UserDao {
 
 		return user;
 	}
+
+
 
 	//Userテーブルの全データを取得
 	@Override
@@ -115,6 +136,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		return userList;
 	}
 
+
+
 	//Userテーブルを1件更新
 	@Override
 	public int updateOne(User user) throws DataAccessException {
@@ -147,8 +170,10 @@ public class UserDaoJdbcImpl implements UserDao {
 //		}
 
 		return rowNumber;
-
 	}
+
+
+
 
 	//Userテーブルを1件削除
 	@Override
@@ -157,6 +182,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		int rowNumber = jdbc.update("DELETE FROM m_user WHERE user_id=?", userId);
 		return rowNumber;
 	}
+
+
 
 	//SQL取得結果をサーバーにCSVで保存
 	@Override

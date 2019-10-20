@@ -68,9 +68,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.authorizeRequests()
 		.antMatchers("/webjars/**").permitAll()  //webjarsへアクセス許可
 		.antMatchers("/css/**").permitAll()      //cssへアクセス許可
-		.antMatchers("/login").permitAll()         //ログインページは直リンクOK
-		.antMatchers("/signup").permitAll()        //ユーザー登録画面は直リンクOK
-		.antMatchers("./admin").hasAuthority("ROLE_ADMIN")
+		.antMatchers("/login").permitAll()       //ログインページは直リンクOK
+		.antMatchers("/signup").permitAll()      //ユーザー登録画面は直リンクOK
+
+		.antMatchers("/admin").hasAuthority("ROLE_ADMIN")
 
 		.anyRequest().authenticated();           //それ以外は直リンク禁止
 
@@ -92,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout()
 		.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 		.logoutUrl("/logout")
-		.logoutSuccessUrl("/logout");
+		.logoutSuccessUrl("/login");
 
 
 
