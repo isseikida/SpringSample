@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.login.domain.model.User;
@@ -18,6 +19,12 @@ public class UserDaoJdbcImpl implements UserDao {
 
 	@Autowired
 	JdbcTemplate jdbc;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+
+
 
 	//Userテーブルの件数を取得
 	@Override
@@ -30,15 +37,23 @@ public class UserDaoJdbcImpl implements UserDao {
 		return count;
 	}
 
+
+
+
 	//	//Userテーブルにデータを1件insert
 	//	@Override
 	//	public int insertOne(User user) throws DataAccessException{
 	//		return 0;
 	//	}
 
+
+
 	//Userテーブルのデータを一件取得
 	@Override
 	public int insertOne(User user) throws DataAccessException {
+
+		//パスワード暗号化
+				String password = passwordEncoder.encode(user.getPassword());
 
 		//ポイント : insert
 		//1件登録
@@ -49,11 +64,21 @@ public class UserDaoJdbcImpl implements UserDao {
 				+ "age,"
 				+ "marriage,"
 				+ "role)"
-				+ " VALUES(?,?,?,?,?,?,?)", user.getUserId(), user.getPassword(), user.getUserName(),
-				user.getBirthday(), user.getAge(), user.isMarriage(), user.getRole());
+				+ " VALUES(?,?,?,?,?,?,?)",
+				password,
+				user.getUserId(),
+				user.getPassword(),
+				user.getUserName(),
+				user.getBirthday(),
+				user.getAge(),
+				user.isMarriage(),
+				user.getRole());
+
 		return rowNumber;
 
 	}
+
+
 
 	//Userテーブルのデータを1件取得
 	@Override
@@ -76,6 +101,8 @@ public class UserDaoJdbcImpl implements UserDao {
 
 		return user;
 	}
+
+
 
 	//Userテーブルの全データを取得
 	@Override
@@ -109,9 +136,15 @@ public class UserDaoJdbcImpl implements UserDao {
 		return userList;
 	}
 
+
+
 	//Userテーブルを1件更新
 	@Override
 	public int updateOne(User user) throws DataAccessException {
+
+		//パスワード暗号化
+		String password = passwordEncoder.encode(user.getPassword());
+
 
 		//1件更新
 		int rowNumber = jdbc.update("UPDATE M_USER"
@@ -121,8 +154,14 @@ public class UserDaoJdbcImpl implements UserDao {
 				+ " birthday=?,"
 				+ " age=?,"
 				+ " marriage=?"
-				+ " WHERE user_id=?", user.getPassword(), user.getUserName(), user.getBirthday(), user.getAge(),
-				user.isMarriage(), user.getUserId());
+				+ " WHERE user_id=?",
+				password,
+				user.getPassword(),
+				user.getUserName(),
+				user.getBirthday(),
+				user.getAge(),
+				user.isMarriage(),
+				user.getUserId());
 
 		//トランザクション確認のため、わざと例外をthrowする
 		//トランザクション実装確認用(確認が済んだためコメントアウト処理)
@@ -131,8 +170,10 @@ public class UserDaoJdbcImpl implements UserDao {
 //		}
 
 		return rowNumber;
-
 	}
+
+
+
 
 	//Userテーブルを1件削除
 	@Override
@@ -141,6 +182,8 @@ public class UserDaoJdbcImpl implements UserDao {
 		int rowNumber = jdbc.update("DELETE FROM m_user WHERE user_id=?", userId);
 		return rowNumber;
 	}
+
+
 
 	//SQL取得結果をサーバーにCSVで保存
 	@Override

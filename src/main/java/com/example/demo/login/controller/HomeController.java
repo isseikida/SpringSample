@@ -45,6 +45,20 @@ public class HomeController {
 	}
 
 
+	//Home画面のGET用メソッド
+		@GetMapping("/home")
+		public String getHome(Model model) {
+
+			//コンテンツ部分にユーザー一覧を表示するための文字列を登録
+			model.addAttribute("contents", "login/home::home_contents");
+
+			return "login/homeLayout";
+
+		}
+
+
+
+
 
 	//ユーザー一覧画面のGET用メソッド
 	@GetMapping("/userList")
@@ -119,7 +133,7 @@ public class HomeController {
 		user.setAge(form.getAge());
 		user.setMarriage(form.isMarriage());
 
-		
+
 	try {
 
 		//更新実行
@@ -186,4 +200,22 @@ public class HomeController {
 		//sample.csvを戻す
 		return new ResponseEntity<>(bytes , header , HttpStatus.OK);
 	}
+
+
+	//アドミン権限専用画面のGET用メソッド
+	@GetMapping("/admin")
+	public String getAdmin(Model model) {
+
+		//コンテンツ部分にユーザ詳細を表示するための文字列を登録
+		model.addAttribute("contents","login/admin::admin_contents");
+
+		//レイアウト用テンプレート
+	    return "login/homeLayout";
+
+	}
+
+
+
+
+
 }
