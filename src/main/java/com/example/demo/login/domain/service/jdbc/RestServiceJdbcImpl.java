@@ -22,10 +22,16 @@ public class RestServiceJdbcImpl implements RestService {
 
 
 
-	//一件登録用メソッド
+	//1件登録用メソッド
 	@Override
 	public boolean insert(User user) {
-		return false;
+
+		int result = dao.insertOne(user);
+		if(result == 0) {
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 	//１件検索用メソッド
@@ -49,7 +55,13 @@ public class RestServiceJdbcImpl implements RestService {
 	//１件削除用メソッド
 	@Override
 	public boolean delete(String userId) {
-		return false;
-	}
 
+		int result = dao.deleteOne(userId);
+
+		if(result == 0) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 }
