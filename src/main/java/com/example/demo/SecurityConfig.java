@@ -98,7 +98,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 
 		//CSRFを無効にするURLを指定
-		RequestMatcher csrfMatcher = new RestMatcher("/resr/**");
+		RequestMatcher csrfMatcher = new RestMatcher("/rest/**");
 
 		//RESTのみCSRF対策を無効に設定
 		http.csrf().requireCsrfProtectionMatcher(csrfMatcher);
