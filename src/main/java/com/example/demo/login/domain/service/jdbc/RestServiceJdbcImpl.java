@@ -34,11 +34,13 @@ public class RestServiceJdbcImpl implements RestService {
 		}
 	}
 
+
 	//１件検索用メソッド
 	@Override
 	public User selectOne(String userId) {
 		return dao.selectOne(userId);
 	}
+
 
 	//全件検索用メソッド
 	@Override
@@ -46,11 +48,20 @@ public class RestServiceJdbcImpl implements RestService {
 		return dao.selectMany();
 	}
 
+
 	//１件更新用メソッド
 	@Override
 	public boolean update(User user) {
-		return false;
+
+		int result = dao.updateOne(user);
+
+		if(result == 0) {
+			return false;
+		}else {
+			return true;
+		}
 	}
+
 
 	//１件削除用メソッド
 	@Override
