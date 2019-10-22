@@ -4,6 +4,7 @@ package com.example.demo.login.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +67,26 @@ public class UserRestController {
 
 		//ユーザーを１件更新
 		boolean result = service.update(user);
+
+		String str = "";
+
+		if(result == true) {
+			str = "{\"result\":\"ok\"}";
+		}else {
+			str = "{\"result\":\"error\"}";
+		}
+
+		//結果用に文字列をリターン
+		return str;
+	}
+
+
+	//ポイント : @DeleteMapping
+	@DeleteMapping("/rest/delete/{id:. +}")
+	public String deleteUserOne(@PathVariable("id")String userId) {
+
+		//ユーザーを１件削除
+		boolean result = service.delete(userId);
 
 		String str = "";
 
