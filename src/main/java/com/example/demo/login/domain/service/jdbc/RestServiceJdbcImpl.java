@@ -69,6 +69,7 @@ public class RestServiceJdbcImpl implements RestService {
 
 		int result = dao.deleteOne(userId);
 
+
 		if(result == 0) {
 			return false;
 		}else {
