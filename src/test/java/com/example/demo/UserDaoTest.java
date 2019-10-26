@@ -29,7 +29,7 @@ public class UserDaoTest {
 
 	//カウントメソッドのテスト1
 	@Test
-	public void countTst1() {
+	public void countTest1() {
 
 		//カウントメソッドの結果が2件であることをテスト
 		assertEquals(dao.count(),2);
